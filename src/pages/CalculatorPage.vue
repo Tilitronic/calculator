@@ -109,14 +109,9 @@ export default defineComponent({
     validateInputVal(event: KeyboardEvent){
       const allowedSymbols = '0123456789+-*/%().'
       event.preventDefault()
-      // if(!allowedSymbols.includes(event.key) &&  event.key!=='Enter'){
-      //   return event.preventDefault()
-      // } else 
       if (event.key==='Enter'){
-        
         this.onCalcInput('=')
       } else if (allowedSymbols.includes(event.key)){
-        console.log('HELLOOOO', event)
         this.onCalcInput(event.key)
       }
       
