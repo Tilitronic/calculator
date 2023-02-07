@@ -103,6 +103,9 @@ export default defineComponent({
     setInputValue (value: string){
         this.$set(this, 'inputValue', value)
       },
+    setLabelValue(value: string){
+      this.$set(this, 'labelValue', value)
+      },
     validateInputVal(event: KeyboardEvent){
       const allowedSymbols = '0123456789+-*/%().'
       event.preventDefault()
@@ -111,17 +114,17 @@ export default defineComponent({
       // } else 
       if (event.key==='Enter'){
         
-        this.onCalcButtonClick('=')
+        this.onCalcInput('=')
       } else if (allowedSymbols.includes(event.key)){
         console.log('HELLOOOO', event)
-        this.onCalcButtonClick(event.key)
+        this.onCalcInput(event.key)
       }
       
       // const lastTypedChar = event.slice(-1);
-      // onCalcButtonClick(lastTypedChar);
+      // onCalcInput(lastTypedChar);
     },
-    onCalcButtonClick(buttonLabel: string) {
-      console.log('onCalcButtonClick', buttonLabel)
+    onCalcInput(buttonLabel: string) {
+      console.log('onCalcInput', buttonLabel)
 
       const inputSymbols='0123456789';
       const inputEvalOperators = '+-*/%().';
@@ -142,12 +145,13 @@ export default defineComponent({
       } 
       else if(buttonLabel==='C'){
         this.setInputValue('')
+        this.setLabelValue('')
       }
       else if(buttonLabel==='='){
         const newInputValue = eval(this.inputValue).toString();
         console.log('newInputValue', newInputValue)
         if ( newInputValue !== 'undefined' && typeof newInputValue === 'string'){
-          this.$set(this, 'labelValue', this.inputValue+'=')
+          this.setLabelValue(this.inputValue+'=')
           this.setInputValue(newInputValue);
           
         }
@@ -177,7 +181,7 @@ export default defineComponent({
         <ButtonComponent 
         v-for="button in $options.calcButtons" 
         :key="button.label" 
-        :onClick="onCalcButtonClick" 
+        :onClick="onCalcInput" 
         :label="button.label" 
         class="calcButton"
         :type="button.type"/>
