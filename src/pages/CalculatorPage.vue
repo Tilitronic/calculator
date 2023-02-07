@@ -126,17 +126,28 @@ export default defineComponent({
     onCalcInput(buttonLabel: string) {
       console.log('onCalcInput', buttonLabel)
 
-      const inputSymbols='0123456789';
+      const inputNumbers='0123456789';
       const inputEvalOperators = '+-*/%().';
-      const lastChar = (string: string): string=>{
-        return string.slice(-1)
-      }
+      const noDotAfterChars = '+-*/%().';
+      const lastChar = this.inputValue.slice(-1)
+      const numbersAr = this.inputValue.match(/\d*\.?\d*/gm);
+      const lastNumberFilter = numbersAr ? numbersAr.filter(string=>string).pop() : '';
+      const lastNumber = lastNumberFilter ? lastNumberFilter : '';
+      console.log('lastNumber',lastNumber)
 
-      if(inputSymbols.includes(buttonLabel)){
+      if(inputNumbers.includes(buttonLabel)){
         this.setInputValue(this.inputValue+buttonLabel)
       } 
+      else if(buttonLabel==='.'){
+        if(noDotAfterChars.includes(lastChar) || lastNumber.includes('.')){
+          return
+        }
+        else{
+          this.setInputValue(this.inputValue+buttonLabel);
+        }
+      }
       else if(inputEvalOperators.includes(buttonLabel)) {
-        if(buttonLabel===lastChar(this.inputValue)){
+        if(buttonLabel===lastChar){
           const newInputValue = this.inputValue.slice(0, -1)+buttonLabel;
           this.setInputValue(newInputValue)
         } else {
